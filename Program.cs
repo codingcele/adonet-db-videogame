@@ -3,42 +3,42 @@ using System;   //il namespace System contiene le classi fondamentali e le funzi
 
 using System.Data.SqlClient;   //il namespace System.Data.SqlClient contiene le classi che permettono di connettersi e comunicare con un database Microsoft SQL Server
 
-const string connectionString = "Data Source=localhost;Initial Catalog=mssqlserver-db_videogame;Integrated Security=True";   //definisce una stringa di connessione che viene utilizzata per connettersi a un database Microsoft SQL Server tramite l'oggetto SqlConnection
-
-static int insertVideogame(string name, string overview, string release_date, int software_house_id)
+namespace adonet_db_videogame
 {
-    int res = 0;
-    // istanzio la risorsa nello using
-    using (SqlConnection connessioneSql = new SqlConnection(connectionString))
+    public class Program
     {
-        // da qui in poi posso usare la risorsa 
-        try
+        static void Main(string[] args)
         {
-            connessioneSql.Open();
-            // Console.WriteLine("Connessione effettuata!");
+            Console.WriteLine("Digita: ");
+            Console.WriteLine("i per inserire un nuovo videogame");
 
-            string sqlQuery =
-                "INSERT INTO videogames(name, overview, release_date, software_house_id) " +
-                "VALUES(@Name, @Overview, @Release_date, @Software_house_id)";
+            string azione = Console.ReadLine();
 
-            using (SqlCommand cmd = new SqlCommand(sqlQuery, connessioneSql))
+            while (azione != "e")
             {
-                cmd.Parameters.AddWithValue("@Name", name);
-                cmd.Parameters.AddWithValue("@Overview", overview);
-                cmd.Parameters.AddWithValue("@Release_date", release_date);
-                cmd.Parameters.AddWithValue("@Software_house_id", software_house_id);
-                res = cmd.ExecuteNonQuery();
+                switch (azione)
+                {
+                    case "i":
 
+                        Console.WriteLine("Inserisci i dati del videogioco che vuoi inserire:");
+                        Console.Write("Nome: ");
+                        string name = Console.ReadLine();
+
+                        Console.Write("Overview: ");
+                        string overview = Console.ReadLine();
+
+                        Console.Write("Release date (YYYY/MM/DD): ");
+                        string releaseDate = Console.ReadLine();
+
+                        Console.Write("Software house id: ");
+                        int softwareHouseId = int.Parse(Console.ReadLine());
+
+                        VideogameManager.insertVideogame(name, overview, releaseDate, softwareHouseId);
+
+                        break;
+                }
             }
 
         }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.ToString());
-        }
     }
-    return res;
 }
-
-
-insertVideogame("Fifa 2020", "Gioco molto bello.", "2020/05/14", 3);
