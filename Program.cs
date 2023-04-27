@@ -9,8 +9,8 @@ namespace adonet_db_videogame
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Digita: ");
-            Console.WriteLine("i per inserire un nuovo videogame");
+
+            ConsoleInteractions.Digit();
 
             string azione = Console.ReadLine();
 
@@ -35,6 +35,14 @@ namespace adonet_db_videogame
 
                         VideogameManager.insertVideogame(name, overview, releaseDate, softwareHouseId);
 
+                        ConsoleInteractions.Digit();
+
+                        azione = Console.ReadLine();
+
+                        break;
+
+                    default:
+                        azione = Console.ReadLine();
                         break;
                 }
             }
