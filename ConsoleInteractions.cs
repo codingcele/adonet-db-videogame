@@ -13,6 +13,7 @@ namespace adonet_db_videogame
             Console.WriteLine("Digita: ");
             Console.WriteLine("i per inserire un nuovo videogame.");
             Console.WriteLine("s per cercare un videogame per id.");
+            Console.WriteLine("d per eliminare un videogame per id.");
         } 
     }
 }

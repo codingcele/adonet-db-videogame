@@ -71,8 +71,8 @@ namespace adonet_db_videogame
                                 string name = reader.GetString(reader.GetOrdinal("name"));
                                 string overview = reader.GetString(reader.GetOrdinal("overview"));
                                 DateTime release_date = reader.GetDateTime(reader.GetOrdinal("release_date"));
-                                
-                                
+
+
                                 int software_house_id = reader.GetOrdinal("software_house_id");
 
                                 Console.WriteLine("Name: " + name);
@@ -94,6 +94,64 @@ namespace adonet_db_videogame
                 {
                     Console.WriteLine(ex.ToString());
                     return null;
+                }
+            }
+        }
+
+        public static void DeleteById(int id)
+        {
+            // istanzio la risorsa nello using
+            using (SqlConnection connessioneSql = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connessioneSql.Open();
+
+                    
+                    using (SqlTransaction transaction = connessioneSql.BeginTransaction())
+                    {
+
+                        try
+                        {
+                            //DEVO ELIMINARE TUTTE LE COMPARSE DEL VIDEOGIOCO NELLE ALTRE TABELLE PER MANTENERE COERENZA NEL DATABASE
+                            
+                            // Elimina le righe dalla tabella ponte
+                            string queryPonte = "DELETE FROM tournament_videogame WHERE videogame_id = @id;" +
+                                                "DELETE FROM reviews WHERE videogame_id = @id;" +
+                                                "DELETE FROM pegi_label_videogame WHERE videogame_id = @id;" +
+                                                "DELETE FROM device_videogame WHERE videogame_id = @id;" +
+                                                "DELETE FROM category_videogame WHERE videogame_id = @id;" +
+                                                "DELETE FROM award_videogame WHERE videogame_id = @id;";
+                            using (SqlCommand cmdPonte = new SqlCommand(queryPonte, connessioneSql))
+                            {
+                                cmdPonte.Transaction = transaction;
+                                cmdPonte.Parameters.AddWithValue("@id", id);
+                                cmdPonte.ExecuteNonQuery();
+                            }
+
+                            // Elimina la riga dalla tabella principale
+                            string queryPrincipale = "DELETE FROM videogames WHERE id = @id";
+                            using (SqlCommand cmdPrincipale = new SqlCommand(queryPrincipale, connessioneSql))
+                            {
+                                cmdPrincipale.Transaction = transaction;
+                                cmdPrincipale.Parameters.AddWithValue("@id", id);
+                                cmdPrincipale.ExecuteNonQuery();
+                            }
+
+                            transaction.Commit();
+                            Console.WriteLine("Riga eliminata con successo");
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback();
+                            Console.WriteLine("Errore durante l'eliminazione: {0}", ex.Message);
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
                 }
             }
         }

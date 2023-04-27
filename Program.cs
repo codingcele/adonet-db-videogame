@@ -48,6 +48,22 @@ namespace adonet_db_videogame
                         Console.Write("Id videogioco: ");
                         int videogameId = int.Parse(Console.ReadLine());
                         VideogameManager.SearchById(videogameId);
+
+                        ConsoleInteractions.Digit();
+
+                        azione = Console.ReadLine();
+
+                        break;
+
+                    case "d":
+                        Console.Write("Id videogioco: ");
+                        int id = int.Parse(Console.ReadLine());
+                        VideogameManager.DeleteById(id);
+
+                        ConsoleInteractions.Digit();
+
+                        azione = Console.ReadLine();
+
                         break;
 
                     default:
