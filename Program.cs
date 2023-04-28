@@ -44,10 +44,21 @@ namespace adonet_db_videogame
 
                         break;
 
-                    case "s":
+                    case "sid":
                         Console.Write("Id videogioco: ");
                         int videogameId = int.Parse(Console.ReadLine());
                         VideogameManager.SearchById(videogameId);
+
+                        ConsoleInteractions.Digit();
+
+                        azione = Console.ReadLine();
+
+                        break;
+
+                    case "str":
+                        Console.Write("Cerca videogioco: ");
+                        string stringa = Console.ReadLine();
+                        VideogameManager.SearchByName(stringa);
 
                         ConsoleInteractions.Digit();
 

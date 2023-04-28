@@ -73,7 +73,7 @@ namespace adonet_db_videogame
                                 DateTime release_date = reader.GetDateTime(reader.GetOrdinal("release_date"));
 
 
-                                int software_house_id = reader.GetOrdinal("software_house_id");
+                                long software_house_id = reader.GetInt64(reader.GetOrdinal("software_house_id"));
 
                                 Console.WriteLine("Name: " + name);
                                 Console.WriteLine("Overview: " + overview);
@@ -97,6 +97,61 @@ namespace adonet_db_videogame
                 }
             }
         }
+
+
+        public static List<Videogame> SearchByName(string stringa)
+        {
+            List<Videogame> risultati = new List<Videogame>();
+            // istanzio la risorsa nello using
+            using (SqlConnection connessioneSql = new SqlConnection(connectionString))
+            {
+                // da qui in poi posso usare la risorsa 
+                try
+                {
+                    connessioneSql.Open();
+                    // Console.WriteLine("Connessione effettuata!");
+
+                    string sqlQuery =
+                        "SELECT * FROM videogames WHERE name LIKE '%' + @Stringa + '%'";
+
+                    using (SqlCommand cmd = new SqlCommand(sqlQuery, connessioneSql))
+                    {
+                        cmd.Parameters.Add(new SqlParameter("@Stringa", stringa));
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                string name = reader.GetString(reader.GetOrdinal("name"));
+                                string overview = reader.GetString(reader.GetOrdinal("overview"));
+                                DateTime release_date = reader.GetDateTime(reader.GetOrdinal("release_date"));
+
+
+                                long software_house_id = reader.GetInt64(reader.GetOrdinal("software_house_id"));
+
+                                Console.WriteLine("Name: " + name);
+                                Console.WriteLine("Overview: " + overview);
+                                string dateString = release_date.ToString("dd/MM/yyyy");
+                                Console.WriteLine("Release date: " + dateString);
+                                Console.WriteLine("Software house id: " + software_house_id);
+                                Console.WriteLine("");
+
+                                Videogame newVideogame = new Videogame(name, overview, release_date, software_house_id);
+                                risultati.Add(newVideogame);
+                            }
+                            return risultati;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    return null;
+                }
+            }
+        }
+
+
+
 
         public static void DeleteById(int id)
         {
