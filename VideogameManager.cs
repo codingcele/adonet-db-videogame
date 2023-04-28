@@ -34,7 +34,6 @@ namespace adonet_db_videogame
                         cmd.Parameters.AddWithValue("@Release_date", videogame.Release_date);
                         cmd.Parameters.AddWithValue("@Software_house_id", videogame.Software_house_id);
                         res = cmd.ExecuteNonQuery();
-
                     }
 
                 }

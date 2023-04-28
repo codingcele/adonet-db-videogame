@@ -32,11 +32,19 @@ namespace adonet_db_videogame
                         DateTime.TryParse(date, out releaseDate);
 
                         Console.Write("Software house id: ");
-                        int softwareHouseId = int.Parse(Console.ReadLine());
+                        int softwareHouseId;
+                        bool inputValido = int.TryParse(Console.ReadLine(), out softwareHouseId);
 
                         Videogame newVideogame = new Videogame(name, overview, releaseDate, softwareHouseId);
 
-                        VideogameManager.InsertVideogame(newVideogame);
+                        DateTime minDate = new DateTime(1753, 1, 1); 
+                        DateTime maxDate = new DateTime(9999, 1, 1);
+
+                        if (!(string.IsNullOrEmpty(name)) && (releaseDate <= DateTime.Now) && (releaseDate > minDate) && (releaseDate < maxDate) && (softwareHouseId >= 1) && (softwareHouseId <= 6))
+                        {
+                            VideogameManager.InsertVideogame(newVideogame);
+                            Console.WriteLine("Videogame creato con successo!");
+                        }
 
                         ConsoleInteractions.Digit();
 
