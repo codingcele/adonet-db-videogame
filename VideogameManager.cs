@@ -210,5 +210,13 @@ namespace adonet_db_videogame
                 }
             }
         }
+
+        public static void CloseApp()
+        {
+            Console.WriteLine("Chiusura in corso...");
+            System.Threading.Thread.Sleep(2000);
+            Environment.Exit(0);
+        }
+
     }
 }

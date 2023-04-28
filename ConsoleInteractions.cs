@@ -15,6 +15,7 @@ namespace adonet_db_videogame
             Console.WriteLine("sid per cercare un videogame per id.");
             Console.WriteLine("str per cercare i videogames che contengono una stringa.");
             Console.WriteLine("d per eliminare un videogame per id.");
+            Console.WriteLine("exit per chiudere il programma.");
         } 
     }
 }

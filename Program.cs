@@ -77,6 +77,11 @@ namespace adonet_db_videogame
 
                         break;
 
+                    case "exit":
+                        VideogameManager.CloseApp();
+
+                        break;
+
                     default:
                         azione = Console.ReadLine();
                         break;
